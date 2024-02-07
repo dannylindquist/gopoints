@@ -9,7 +9,12 @@ import (
 )
 
 func (s *Server) registerGameRoutes() {
-	s.router.HandleFunc("/game/{id}", s.gameById)
+	s.router.HandleFunc("/game/{id}", s.gameById).Methods("GET")
+	s.router.HandleFunc("/game", s.createGame).Methods("POST")
+}
+
+func (s *Server) createGame(w http.ResponseWriter, r *http.Request) {
+
 }
 
 func (s *Server) gameById(w http.ResponseWriter, r *http.Request) {
@@ -17,5 +22,5 @@ func (s *Server) gameById(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprintf(w, "bad request: %v", err)
 	}
-	fmt.Fprint(w, id)
+	game := s.GameService.GetGame(id)
 }

@@ -4,17 +4,20 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/dannylindquist/gopoints"
 	"github.com/gorilla/mux"
 )
 
 type Server struct {
 	router *mux.Router
+
+	GameService gopoints.GameService
 }
 
 func NewServer() *Server {
 	router := mux.NewRouter()
 	s := &Server{
-		router,
+		router: router,
 	}
 
 	s.registerGameRoutes()
