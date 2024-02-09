@@ -11,6 +11,7 @@ type Game struct {
 type GameService interface {
 	// create a game
 	CreateGame(ctx context.Context, update GameUpdate)
+	GetGame(ctx context.Context, id int) *Game
 }
 
 type GameUpdate struct {

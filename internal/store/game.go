@@ -26,4 +26,19 @@ func (gs *GameService) CreateGame(ctx context.Context, game gopoints.GameUpdate)
 	gs.mutex.Lock()
 	defer gs.mutex.Unlock()
 	gs.db.SetItems("games", gs.id, game)
+	gs.id++
+}
+
+func (gs *GameService) GetGame(ctx context.Context, id int) *gopoints.Game {
+	gs.mutex.Lock()
+	defer gs.mutex.Unlock()
+	game, ok := gs.db.GetItems("games")[id]
+	if !ok {
+		return nil
+	}
+	casted, ok := game.(*gopoints.Game)
+	if !ok {
+		return nil
+	}
+	return casted
 }
