@@ -22,11 +22,17 @@ func NewGameService(db *Store) *GameService {
 	}
 }
 
-func (gs *GameService) CreateGame(ctx context.Context, game gopoints.GameUpdate) {
+func (gs *GameService) CreateGame(ctx context.Context, game gopoints.GameUpdate) *gopoints.Game {
 	gs.mutex.Lock()
 	defer gs.mutex.Unlock()
-	gs.db.SetItems("games", gs.id, game)
+	newGame := &gopoints.Game{
+		ID:      gs.id,
+		Type:    "ASC",
+		Players: make([]gopoints.Player, 0),
+	}
+	gs.db.SetItems("games", newGame.ID, newGame)
 	gs.id++
+	return newGame
 }
 
 func (gs *GameService) GetGame(ctx context.Context, id int) *gopoints.Game {
